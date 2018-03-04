@@ -1,6 +1,7 @@
 package org.test.getData;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class DBexchange {
@@ -49,6 +50,7 @@ public class DBexchange {
     }
 
     void add(String login, String passwd) { // add record
+
         try {
             stmt.executeUpdate("INSERT INTO " + NAME_TABLE +
                     " (login, passwd) " +
@@ -58,14 +60,23 @@ public class DBexchange {
         }
     }
 
-    void update(String login, String passwd) { // update passwd by login
+    void update(LocalDateTime time, double temp, double hum, double press) { // update passwd by login
+
         try {
-            stmt.executeUpdate("UPDATE " + NAME_TABLE +
-                    " set PASSWD='" + passwd +
-                    "' where LOGIN='" + login + "';");
-        } catch (Exception e) {
+            PreparedStatement ps = connect.prepareStatement("INSERT INTO " +
+                    NAME_TABLE + "(time, temp, hum, press) " +
+                    "VALUES(?, ?, ?, ?);");
+
+            ps.setTimestamp(1, Timestamp.valueOf(time));
+            ps.setDouble(2, temp);
+            ps.setDouble(3, hum);
+            ps.setDouble(4, press);
+            ps.addBatch();
+            ps.executeBatch();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     void delete(String login) { // delete record by login

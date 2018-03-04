@@ -1,10 +1,14 @@
 package org.test.getData;
 
+import com.sun.javafx.tk.Toolkit;
+
+import java.time.LocalDateTime;
+
 public class DataProvider {
     private static DataProvider instance = new DataProvider();
-    private double currentTemp;
-    private double currentHum;
-    private double currentPress;
+    private volatile double currentTemp;
+    private volatile double currentHum;
+    private volatile double currentPress;
     private final String SQL_CREATE_TABLE =
             "DROP TABLE IF EXISTS " + "data" + ";" +
                     "CREATE TABLE " + "data" +
@@ -23,13 +27,20 @@ public class DataProvider {
         currentTemp = 15;
         currentHum = 60;
         currentPress = 740;
+        backGroundTask BGT = new backGroundTask();
+        new Thread(BGT).start();
     }
 
     public static DataProvider getInst() {
         return instance;
     }
 
-    public void updateTemp() {
+    public void updateInfo(LocalDateTime time, double temp, double hum, double press) {
+        currentTemp = temp;
+        currentHum = hum;
+        currentPress = press;
+
+        db.update(time, temp, hum, press);
 
     }
 

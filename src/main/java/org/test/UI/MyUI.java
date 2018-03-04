@@ -11,6 +11,7 @@ import com.vaadin.ui.*;
 import org.test.getData.DataProvider;
 import org.test.getData.GetSensData;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -39,6 +40,9 @@ public class MyUI extends UI {
         //name.setCaption("Type your name here:");
 
         Button button = new Button("Update");
+
+        Button button2 = new Button("Generate");
+
         button.addClickListener(e -> {
             Notification.show("It's work !!!");
             temp_l.setValue(String.format( "%.2f",dataProvider.getTemp()) + " °C");
@@ -48,9 +52,18 @@ public class MyUI extends UI {
 //            layout.addComponent(new Label("Thanks " + name.getValue()
 //                    + ", it works!"));
         });
+
+        button2.addClickListener(e->{
+            LocalDateTime time = LocalDateTime.now();
+            dataProvider.updateInfo(time, 35, 40, 785);
+            temp_l.setValue(String.format( "%.2f",dataProvider.getTemp()) + " °C");
+            press_l.setValue(String.format( "%.2f",dataProvider.getPressure()) + " mmHg");
+            humid_l.setValue(dataProvider.getHum() + "%");
+
+        });
         layout.setMargin(true);
         layout.setSpacing(true);
-        layout.addComponents(label,temp, temp_l, press, press_l, humid, humid_l, button);
+        layout.addComponents(label,temp, temp_l, press, press_l, humid, humid_l, button, button2);
         
         setContent(layout);
     }
