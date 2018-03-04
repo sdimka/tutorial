@@ -1,4 +1,4 @@
-package org.test;
+package org.test.UI;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -7,8 +7,11 @@ import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
+import org.test.getData.DataProvider;
+import org.test.getData.GetSensData;
+
+import java.util.concurrent.ExecutorService;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -28,9 +31,8 @@ public class MyUI extends UI {
         final Label temp = new Label("Температура:");
         final Label press = new Label("Давление:");
         final Label humid = new Label("Влажность:");
-        GetSensData gsd = GetSensData.getInst();
+        DataProvider dataProvider = DataProvider.getInst();
         Label label = new Label("Hello My New Suite!");
-
         Label temp_l = new Label("Press button to get");
         Label press_l = new Label("Press button to get");
         Label humid_l = new Label("Press button to get");
@@ -39,9 +41,9 @@ public class MyUI extends UI {
         Button button = new Button("Update");
         button.addClickListener(e -> {
             Notification.show("It's work !!!");
-            temp_l.setValue(String.format( "%.2f",gsd.getTemp()) + " °C");
-            press_l.setValue(String.format( "%.2f",gsd.getPressure()) + " mmHg");
-            humid_l.setValue(gsd.getHum() + "%");
+            temp_l.setValue(String.format( "%.2f",dataProvider.getTemp()) + " °C");
+            press_l.setValue(String.format( "%.2f",dataProvider.getPressure()) + " mmHg");
+            humid_l.setValue(dataProvider.getHum() + "%");
 
 //            layout.addComponent(new Label("Thanks " + name.getValue()
 //                    + ", it works!"));
