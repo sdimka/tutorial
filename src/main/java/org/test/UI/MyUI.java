@@ -1,75 +1,211 @@
 package org.test.UI;
 
-import javax.servlet.annotation.WebServlet;
+import com.vaadin.annotations.*;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.Title;
-import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
+import com.vaadin.event.Action;
+import com.vaadin.event.Action.Handler;
+import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.*;
+import com.vaadin.shared.ui.ContentMode;
+
 import com.vaadin.ui.*;
-import org.test.getData.DataProvider;
-import org.test.getData.GetSensData;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.themes.ValoTheme;
 
-import java.time.LocalDateTime;
-import java.util.concurrent.ExecutorService;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/**
- * This UI is the application entry point. A UI may either represent a browser window 
- * (or tab) or some part of an HTML page where a Vaadin application is embedded.
- * <p>
- * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be 
- * overridden to add component to the user interface and initialize non-component functionality.
- */
 
-@Title("Sensor Info")
-@Theme("mytheme")
+@Theme("valo")
+@Title("Valo Theme Test")
+// @StyleSheet("valo-theme-ui.css")
+@PreserveOnRefresh
+
 public class MyUI extends UI {
 
+    private TestIcon testIcon = new TestIcon(100);
+
+    ValoMenuLayout root = new ValoMenuLayout();
+    ComponentContainer viewDisplay = root.getContentContainer();
+    CssLayout menu = new CssLayout();
+    CssLayout menuItemsLayout = new CssLayout();
+
+    private Navigator navigator;
+    private LinkedHashMap<String, String> menuItems = new LinkedHashMap<String, String>();
+
     @Override
-    protected void init(VaadinRequest vaadinRequest) {
-        final VerticalLayout layout = new VerticalLayout();
-        final Label temp = new Label("Температура:");
-        final Label press = new Label("Давление:");
-        final Label humid = new Label("Влажность:");
-        DataProvider dataProvider = DataProvider.getInst();
-        Label label = new Label("Hello My New Suite!");
-        Label temp_l = new Label("Press button to get");
-        Label press_l = new Label("Press button to get");
-        Label humid_l = new Label("Press button to get");
-        //name.setCaption("Type your name here:");
+    protected void init(VaadinRequest request) {
+        getPage().setTitle("Hello My New Suite!");
+        setContent(root);
+        root.setWidth("100%");
 
-        Button button = new Button("Update");
+        root.addMenu(buildMenu());
+        addStyleName(ValoTheme.UI_WITH_MENU);
 
-        Button button2 = new Button("Generate");
+        navigator = new Navigator(this, viewDisplay);
 
-        button.addClickListener(e -> {
-            Notification.show("It's work !!!");
-            temp_l.setValue(String.format( "%.2f",dataProvider.getTemp()) + " °C");
-            press_l.setValue(String.format( "%.2f",dataProvider.getPressure()) + " mmHg");
-            humid_l.setValue(dataProvider.getHum() + "%");
+        navigator.addView("sensors", Sensors.class);
+        navigator.addView("system", System.class);
+        navigator.addView("settings", Settings.class);
 
-//            layout.addComponent(new Label("Thanks " + name.getValue()
-//                    + ", it works!"));
+        String f = Page.getCurrent().getUriFragment();
+        if (f == null || f.equals("")) {
+            navigator.navigateTo("sensors");
+        }
+
+        navigator.addViewChangeListener(new ViewChangeListener() {
+
+            @Override
+            public boolean beforeViewChange(ViewChangeEvent event) {
+                return true;
+            }
+
+            @Override
+            public void afterViewChange(ViewChangeEvent event) {
+                for (Iterator<Component> it = menuItemsLayout.iterator(); it
+                        .hasNext();) {
+                    it.next().removeStyleName("selected");
+                }
+                for (Map.Entry<String, String> item : menuItems.entrySet()) {
+                    if (event.getViewName().equals(item.getKey())) {
+                        for (Iterator<Component> it = menuItemsLayout
+                                .iterator(); it.hasNext();) {
+                            Component c = it.next();
+                            if (c.getCaption() != null
+                                    && c.getCaption().startsWith(
+                                    item.getValue())) {
+                                c.addStyleName("selected");
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                menu.removeStyleName("valo-menu-visible");
+            }
         });
+    }
 
-        button2.addClickListener(e->{
-            LocalDateTime time = LocalDateTime.now();
-            dataProvider.updateInfo(time, 35, 40, 785);
-            temp_l.setValue(String.format( "%.2f",dataProvider.getTemp()) + " °C");
-            press_l.setValue(String.format( "%.2f",dataProvider.getPressure()) + " mmHg");
-            humid_l.setValue(dataProvider.getHum() + "%");
+    CssLayout buildMenu() {
+        // Add items
+        menuItems.put("sensors", "Sensor Data");
+        menuItems.put("system", "System Data");
+        menuItems.put("settings", "Settings");
 
+          HorizontalLayout top = new HorizontalLayout();
+//        top.setWidth("100%");
+//        top.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
+//        top.addStyleName(ValoTheme.MENU_TITLE);
+//        menu.addComponent(top);
+//        menu.addComponent(createThemeSelect());
+
+        Button showMenu = new Button("Menu", new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                if (menu.getStyleName().contains("valo-menu-visible")) {
+                    menu.removeStyleName("valo-menu-visible");
+                } else {
+                    menu.addStyleName("valo-menu-visible");
+                }
+            }
         });
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        layout.addComponents(label,temp, temp_l, press, press_l, humid, humid_l, button, button2);
-        
-        setContent(layout);
+        showMenu.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        showMenu.addStyleName(ValoTheme.BUTTON_SMALL);
+        showMenu.addStyleName("valo-menu-toggle");
+        showMenu.setIcon(FontAwesome.LIST);
+        menu.addComponent(showMenu);
+
+        Label title = new Label("<h3>Vaadin <strong>Valo Theme</strong></h3>",
+                ContentMode.HTML);
+        title.setSizeUndefined();
+        top.addComponent(title);
+        top.setExpandRatio(title, 1);
+
+        MenuBar settings = new MenuBar();
+        settings.addStyleName("user-menu");
+
+        MenuBar.MenuItem settingsItem = settings.addItem("Bla"
+                        + " " + "Bla-bla" + "Bls-Bls",
+                new ClassResource("profile-pic-300px.jpg"),
+                null);
+        settingsItem.addItem("Edit Profile", null);
+        settingsItem.addItem("Preferences", null);
+        settingsItem.addSeparator();
+        settingsItem.addItem("Sign Out", null);
+        menu.addComponent(settings);
+
+        menuItemsLayout.setPrimaryStyleName("valo-menuitems");
+        menu.addComponent(menuItemsLayout);
+
+        Label label = null;
+        int count = -1;
+        for (final Map.Entry<String, String> item : menuItems.entrySet()) {
+            if (item.getKey().equals("sensors")) {
+                label = new Label("Components", ContentMode.HTML);
+                label.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
+                label.addStyleName(ValoTheme.LABEL_H4);
+                label.setSizeUndefined();
+                menuItemsLayout.addComponent(label);
+            }
+            if (item.getKey().equals("settings")) {
+                label.setValue(label.getValue()
+                        + " <span class=\"valo-menu-badge\">" + count
+                        + "</span>");
+                count = 0;
+                label = new Label("Containers", ContentMode.HTML);
+                label.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
+                label.addStyleName(ValoTheme.LABEL_H4);
+                label.setSizeUndefined();
+                menuItemsLayout.addComponent(label);
+            }
+            if (item.getKey().equals("system")) {
+                label.setValue(label.getValue()
+                        + " <span class=\"valo-menu-badge\">" + count
+                        + "</span>");
+                count = 0;
+                label = new Label("Other", ContentMode.HTML);
+                label.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
+                label.addStyleName(ValoTheme.LABEL_H4);
+                label.setSizeUndefined();
+                menuItemsLayout.addComponent(label);
+            }
+            Button b = new Button(item.getValue(), new ClickListener() {
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    navigator.navigateTo(item.getKey());
+                }
+            });
+            if (count == 2) {
+                b.setCaption(b.getCaption()
+                        + " <span class=\"valo-menu-badge\">123</span>");
+            }
+            b.setHtmlContentAllowed(true);
+            b.setPrimaryStyleName(ValoTheme.MENU_ITEM);
+            b.setIcon(testIcon.get());
+            menuItemsLayout.addComponent(b);
+            count++;
+        }
+        label.setValue(label.getValue() + " <span class=\"valo-menu-badge\">"
+                + count + "</span>");
+
+        return menu;
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
+        @Override
+        protected void servletInitialized() throws ServletException {
+            super.servletInitialized();
+            getService().addSessionInitListener(
+                    new ValoThemeSessionInitListener());
+        }
     }
 }
+
