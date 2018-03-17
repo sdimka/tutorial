@@ -12,6 +12,8 @@ public class backGroundTask implements Runnable{
     @Override
     public void run() {
         dataProvider = DataProvider.getInst();
+//        GetSensData gsd = GetSensData.getInst();
+
         while (true) {
             try {
                 Thread.sleep(10000);
@@ -22,6 +24,11 @@ public class backGroundTask implements Runnable{
             temp = Math.random() * 10;
             hum = Math.random() * 100;
             press = Math.random() * 750;
+
+//            temp = gsd.getTemp();
+//            hum = gsd.getHum();
+//            press = gsd.getPressure();
+
             dataProvider.updateInfo(time,temp,hum,press);
         }
     }

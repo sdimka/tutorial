@@ -50,20 +50,18 @@ public class Sensors extends VerticalLayout implements View {
         TestIcon testIcon = new TestIcon(60);
 
         Panel panel = new Panel("Температура");
-     //   Resource edit = new Icon(VaadinIcons.EDIT);
-
-     //   Resource close = VaadinIcons.CLOSE.create();
-        panel.setIcon(testIcon.getByNum(50));
+        panel.setIcon(VaadinIcons.SUN_O);
+        panel.addStyleName("color1");
         panel.setContent(panelContentTemp());
         row.addComponent(panel);
 
         Panel panel1 = new Panel("Давление");
-        panel1.setIcon(testIcon.get());
+        panel1.setIcon(VaadinIcons.CONTROLLER);
         panel1.setContent(panelContentPress());
         row.addComponent(panel1);
 
         Panel panel2 = new Panel("Влажность");
-        panel2.setIcon(testIcon.get());
+        panel2.setIcon(VaadinIcons.DROP);
         panel2.setContent(panelContentHum());
         row.addComponent(panel2);
     }

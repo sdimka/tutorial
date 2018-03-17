@@ -1,7 +1,5 @@
 package org.test.getData;
 
-import com.sun.javafx.tk.Toolkit;
-
 import java.time.LocalDateTime;
 
 public class DataProvider {

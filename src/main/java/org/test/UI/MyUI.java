@@ -4,6 +4,7 @@ import com.vaadin.annotations.*;
 
 import com.vaadin.event.Action;
 import com.vaadin.event.Action.Handler;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
@@ -99,11 +100,11 @@ public class MyUI extends UI {
         menuItems.put("system", "System Data");
         menuItems.put("settings", "Settings");
 
-          HorizontalLayout top = new HorizontalLayout();
-//        top.setWidth("100%");
-//        top.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
-//        top.addStyleName(ValoTheme.MENU_TITLE);
-//        menu.addComponent(top);
+        HorizontalLayout top = new HorizontalLayout();
+        top.setWidth("100%");
+        top.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
+        top.addStyleName(ValoTheme.MENU_TITLE);
+        menu.addComponent(top);
 //        menu.addComponent(createThemeSelect());
 
         Button showMenu = new Button("Menu", new ClickListener() {
@@ -122,7 +123,7 @@ public class MyUI extends UI {
         showMenu.setIcon(FontAwesome.LIST);
         menu.addComponent(showMenu);
 
-        Label title = new Label("<h3>Vaadin <strong>Valo Theme</strong></h3>",
+        Label title = new Label("<h3>Моя <strong>Погодная Станция</strong></h3>",
                 ContentMode.HTML);
         title.setSizeUndefined();
         top.addComponent(title);
@@ -146,25 +147,23 @@ public class MyUI extends UI {
         Label label = null;
         int count = -1;
         for (final Map.Entry<String, String> item : menuItems.entrySet()) {
+
+            Button b = new Button(item.getValue(), new ClickListener() {
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    navigator.navigateTo(item.getKey());
+                }
+            });
+
             if (item.getKey().equals("sensors")) {
                 label = new Label("Sensors", ContentMode.HTML);
                 label.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
                 label.addStyleName(ValoTheme.LABEL_H4);
                 label.setSizeUndefined();
+                b.setIcon(VaadinIcons.DASHBOARD);
                 menuItemsLayout.addComponent(label);
             }
             if (item.getKey().equals("settings")) {
-                label.setValue(label.getValue()
-                        + " <span class=\"valo-menu-badge\">" + count
-                        + "</span>");
-                count = 0;
-                label = new Label("System info", ContentMode.HTML);
-                label.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
-                label.addStyleName(ValoTheme.LABEL_H4);
-                label.setSizeUndefined();
-                menuItemsLayout.addComponent(label);
-            }
-            if (item.getKey().equals("system")) {
                 label.setValue(label.getValue()
                         + " <span class=\"valo-menu-badge\">" + count
                         + "</span>");
@@ -174,20 +173,28 @@ public class MyUI extends UI {
                 label.addStyleName(ValoTheme.LABEL_H4);
                 label.setSizeUndefined();
                 menuItemsLayout.addComponent(label);
+                b.setIcon(VaadinIcons.TOOLS);
             }
-            Button b = new Button(item.getValue(), new ClickListener() {
-                @Override
-                public void buttonClick(ClickEvent event) {
-                    navigator.navigateTo(item.getKey());
-                }
-            });
+            if (item.getKey().equals("system")) {
+                label.setValue(label.getValue()
+                        + " <span class=\"valo-menu-badge\">" + count
+                        + "</span>");
+                count = 0;
+                label = new Label("System info", ContentMode.HTML);
+                label.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
+                label.addStyleName(ValoTheme.LABEL_H4);
+                label.setSizeUndefined();
+                menuItemsLayout.addComponent(label);
+                b.setIcon(VaadinIcons.DESKTOP);
+            }
+
             if (count == 2) {
                 b.setCaption(b.getCaption()
                         + " <span class=\"valo-menu-badge\">123</span>");
             }
             b.setHtmlContentAllowed(true);
             b.setPrimaryStyleName(ValoTheme.MENU_ITEM);
-            b.setIcon(testIcon.get());
+//            b.setIcon(VaadinIcons.CUBES);
             menuItemsLayout.addComponent(b);
             count++;
         }
