@@ -9,10 +9,13 @@ public class DBexchange {
     private final String DRIVER_NAME = "org.sqlite.JDBC";
     private final String NAME_TABLE = "data";
     private final String SQL_CREATE_TABLE =
-            "DROP TABLE IF EXISTS " + NAME_TABLE + ";" +
-                    "CREATE TABLE " + NAME_TABLE +
-                    "(login  CHAR(6) PRIMARY KEY NOT NULL," +
-                    " passwd CHAR(6) NOT NULL);";
+            "DROP TABLE IF EXISTS " + "data" + ";" +
+                    "CREATE TABLE " + "data" +
+                    "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    " time DATETIME, " +
+                    " temp DOUBLE," +
+                    " hum DOUBLE," +
+                    " press DOUBLE);";
     private final String SQL_SELECT = "SELECT * FROM " + NAME_TABLE + ";";
     private final String DB_CREATED = "Darabase created.";
     private final String RECORD_ADDED = "Record added.";

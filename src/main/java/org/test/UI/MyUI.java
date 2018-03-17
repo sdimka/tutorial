@@ -14,6 +14,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
+import org.test.getData.DataProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -130,8 +131,7 @@ public class MyUI extends UI {
         MenuBar settings = new MenuBar();
         settings.addStyleName("user-menu");
 
-        MenuBar.MenuItem settingsItem = settings.addItem("Bla"
-                        + " " + "Bla-bla" + "Bls-Bls",
+        MenuBar.MenuItem settingsItem = settings.addItem("Менюшка на всякий случай",
                 new ClassResource("profile-pic-300px.jpg"),
                 null);
         settingsItem.addItem("Edit Profile", null);
@@ -147,7 +147,7 @@ public class MyUI extends UI {
         int count = -1;
         for (final Map.Entry<String, String> item : menuItems.entrySet()) {
             if (item.getKey().equals("sensors")) {
-                label = new Label("Components", ContentMode.HTML);
+                label = new Label("Sensors", ContentMode.HTML);
                 label.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
                 label.addStyleName(ValoTheme.LABEL_H4);
                 label.setSizeUndefined();
@@ -158,7 +158,7 @@ public class MyUI extends UI {
                         + " <span class=\"valo-menu-badge\">" + count
                         + "</span>");
                 count = 0;
-                label = new Label("Containers", ContentMode.HTML);
+                label = new Label("System info", ContentMode.HTML);
                 label.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
                 label.addStyleName(ValoTheme.LABEL_H4);
                 label.setSizeUndefined();
@@ -169,7 +169,7 @@ public class MyUI extends UI {
                         + " <span class=\"valo-menu-badge\">" + count
                         + "</span>");
                 count = 0;
-                label = new Label("Other", ContentMode.HTML);
+                label = new Label("Settings", ContentMode.HTML);
                 label.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
                 label.addStyleName(ValoTheme.LABEL_H4);
                 label.setSizeUndefined();
@@ -202,6 +202,7 @@ public class MyUI extends UI {
     public static class MyUIServlet extends VaadinServlet {
         @Override
         protected void servletInitialized() throws ServletException {
+            DataProvider dataProvider = DataProvider.getInst();
             super.servletInitialized();
             getService().addSessionInitListener(
                     new ValoThemeSessionInitListener());

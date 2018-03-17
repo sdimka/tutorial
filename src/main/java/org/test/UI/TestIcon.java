@@ -53,6 +53,10 @@ public class TestIcon {
         return new ThemeResource("../runo/icons/" + imageSize + "/document.png");
     }
 
+    public Resource getByNum(int num){
+        return ICONS.get(num);
+    }
+
     static List<FontAwesome> ICONS = new ArrayList<FontAwesome>();
 
     static {
