@@ -28,29 +28,29 @@ public class GetSensData {
     private static final byte BME280_DIG_T1 = (byte)0x88;
     private static final byte BME280_DIG_T2 = (byte)0x8A;
     private static final byte BME280_DIG_T3 = (byte)0x8C;
-    public static final byte BME280_DIG_P1 = (byte)0x8E;
-    public static final byte BME280_DIG_P2 = (byte)0x90;
-    public static final byte BME280_DIG_P3 = (byte)0x92;
-    public static final byte BME280_DIG_P4 = (byte)0x94;
-    public static final byte BME280_DIG_P5 = (byte)0x96;
-    public static final byte BME280_DIG_P6 = (byte)0x98;
-    public static final byte BME280_DIG_P7 = (byte)0x9A;
-    public static final byte BME280_DIG_P8 = (byte)0x9C;
-    public static final byte BME280_DIG_P9 = (byte)0x9E;
-    public static final byte BME280_DIG_H1 = (byte)0xA1;
-    public static final byte BME280_DIG_H2 = (byte)0xE1;
-    public static final byte BME280_DIG_H3 = (byte)0xE3;
-    public static final byte BME280_DIG_H4 = (byte)0xE4;
-    public static final byte BME280_DIG_H5 = (byte)0xE5;
-    public static final byte BME280_DIG_H6 = (byte)0xE7;
+    private static final byte BME280_DIG_P1 = (byte)0x8E;
+    private static final byte BME280_DIG_P2 = (byte)0x90;
+    private static final byte BME280_DIG_P3 = (byte)0x92;
+    private static final byte BME280_DIG_P4 = (byte)0x94;
+    private static final byte BME280_DIG_P5 = (byte)0x96;
+    private static final byte BME280_DIG_P6 = (byte)0x98;
+    private static final byte BME280_DIG_P7 = (byte)0x9A;
+    private static final byte BME280_DIG_P8 = (byte)0x9C;
+    private static final byte BME280_DIG_P9 = (byte)0x9E;
+    private static final byte BME280_DIG_H1 = (byte)0xA1;
+    private static final byte BME280_DIG_H2 = (byte)0xE1;
+    private static final byte BME280_DIG_H3 = (byte)0xE3;
+    private static final byte BME280_DIG_H4 = (byte)0xE4;
+    private static final byte BME280_DIG_H5 = (byte)0xE5;
+    private static final byte BME280_DIG_H6 = (byte)0xE7;
     // TSL2561 power control values
     public static final byte TSL2561_POWER_UP = (byte)0x03;
     public static final byte TSL2561_POWER_DOWN = (byte)0x00;
 
     public static int nDevices;
 
-    I2CBus i2c;
-    I2CDevice device;
+    private I2CBus i2c;
+    private I2CDevice device;
 
     private GetSensData(){
         try {

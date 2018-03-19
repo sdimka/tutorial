@@ -24,7 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-@Theme("valo")
+@Theme("mytheme")
 @Title("Valo Theme Test")
 // @StyleSheet("valo-theme-ui.css")
 @PreserveOnRefresh

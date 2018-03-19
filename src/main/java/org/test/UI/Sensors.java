@@ -36,10 +36,9 @@ public class Sensors extends VerticalLayout implements View {
 
         dataProvider = DataProvider.getInst();
 
-
         setMargin(true);
 
-        Label h1 = new Label("Panels & Layout panels");
+        Label h1 = new Label("Сводки с полей:");
         h1.addStyleName(ValoTheme.LABEL_H1);
         addComponent(h1);
 
@@ -47,7 +46,6 @@ public class Sensors extends VerticalLayout implements View {
         row.addStyleName(ValoTheme.LAYOUT_HORIZONTAL_WRAPPING);
         row.setSpacing(true);
         addComponent(row);
-        TestIcon testIcon = new TestIcon(60);
 
         Panel panel = new Panel("Температура");
         panel.setIcon(VaadinIcons.SUN_O);
@@ -57,11 +55,13 @@ public class Sensors extends VerticalLayout implements View {
 
         Panel panel1 = new Panel("Давление");
         panel1.setIcon(VaadinIcons.CONTROLLER);
+        panel1.addStyleName("color2");
         panel1.setContent(panelContentPress());
         row.addComponent(panel1);
 
         Panel panel2 = new Panel("Влажность");
         panel2.setIcon(VaadinIcons.DROP);
+        panel2.addStyleName("color3");
         panel2.setContent(panelContentHum());
         row.addComponent(panel2);
     }
@@ -73,6 +73,7 @@ public class Sensors extends VerticalLayout implements View {
         layout.setSpacing(true);
         Label content = new Label(
                 String.format( "%.2f", dataProvider.getTemp()) + " °C");
+        content.setStyleName(ValoTheme.LABEL_BOLD);
         content.setWidth("10em");
         layout.addComponent(content);
 //        Button button = new Button("Button");
@@ -87,7 +88,8 @@ public class Sensors extends VerticalLayout implements View {
         layout.setMargin(true);
         layout.setSpacing(true);
         Label content = new Label(
-                dataProvider.getHum() + "%");
+                String.format("%.2f",dataProvider.getHum()) + "%");
+        content.setStyleName(ValoTheme.LABEL_BOLD);
         content.setWidth("10em");
         layout.addComponent(content);
         //Button button1 = new Button("Button1");
@@ -101,7 +103,8 @@ public class Sensors extends VerticalLayout implements View {
         layout.setMargin(true);
         layout.setSpacing(true);
         Label content = new Label(
-                String.format( "%.2f",dataProvider.getPressure()) + " mmHg");
+                String.format("%.2f",dataProvider.getPressure()) + " mmHg");
+        content.setStyleName(ValoTheme.LABEL_BOLD);
         content.setWidth("10em");
         layout.addComponent(content);
 //        Button button2 = new Button("Button2");
