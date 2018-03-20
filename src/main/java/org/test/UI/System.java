@@ -1,17 +1,18 @@
 package org.test.UI;
 
+import com.vaadin.addon.charts.Chart;
 import com.vaadin.navigator.View;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import org.test.getData.GetSysData;
+import org.test.oshi.GetSystemInfo;
 
 public class System extends VerticalLayout implements View {
 
-    GetSysData sys;
+    GetSystemInfo sys;
 
     public System(){
-        sys = GetSysData.getInst();
+        sys = GetSystemInfo.getInst();
 
         setMargin(true);
 
@@ -19,12 +20,11 @@ public class System extends VerticalLayout implements View {
         h1.addStyleName(ValoTheme.LABEL_H1);
         addComponent(h1);
 
-        Label t = new Label(sys.GetCpuTemp() + " Темература");
-        t.addStyleName(ValoTheme.LABEL_H3);
-        addComponent(t);
-
-        Label mt = new Label(sys.GetCpuTemp() + " Пам всего");
+        Label mt = new Label("Uptime: " + sys.getSysUpTime());
         mt.addStyleName(ValoTheme.LABEL_H3);
         addComponent(mt);
+
+        CpuGraph chart = new CpuGraph();
+        addComponent(chart);
     }
 }
