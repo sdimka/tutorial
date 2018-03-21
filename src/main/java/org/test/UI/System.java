@@ -20,11 +20,22 @@ public class System extends VerticalLayout implements View {
         h1.addStyleName(ValoTheme.LABEL_H1);
         addComponent(h1);
 
-        Label mt = new Label("Uptime: " + sys.getSysUpTime());
+        Label mt = new Label("System: " + sys.getOS());
         mt.addStyleName(ValoTheme.LABEL_H3);
         addComponent(mt);
 
+        Label mt1 = new Label("Uptime: " + sys.getSysUpTime());
+        mt1.addStyleName(ValoTheme.LABEL_H3);
+        addComponent(mt1);
+
+        Label mt2 = new Label(sys.getTotalMem() + " " + sys.getUsedMem() + " " + sys.getFreeMem());
+        mt2.addStyleName(ValoTheme.LABEL_H3);
+        addComponent(mt2);
+
         CpuGraph chart = new CpuGraph();
         addComponent(chart);
+
+        MemGraph chart2 = new MemGraph();
+        addComponent(chart2);
     }
 }

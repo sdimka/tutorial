@@ -32,11 +32,14 @@ public class GetSystemInfo {
         return (float)(processor.getSystemCpuLoadBetweenTicks() * 100);
     }
 
-    public float getFreeMem(){
-       return  memory.getTotal() / 1073741824;
+    public float getUsedMem(){
+        return  (memory.getTotal() - memory.getAvailable()) / 1073741824;
+    }
+    public float getTotalMem(){
+        return  memory.getTotal() / 1073741824;
     }
 
-    public float getAvailMem(){
+    public float getFreeMem(){
         return memory.getAvailable()/ 1073741824;
     }
 
