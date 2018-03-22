@@ -13,6 +13,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.test.UI.historyWindow.PopUpWindow;
 import org.test.getData.DataProvider;
 import org.test.getData.GetSensData;
 
@@ -39,7 +40,7 @@ public class Sensors extends VerticalLayout implements View {
         setMargin(true);
 
         Label h1 = new Label("Сводки с полей:");
-        h1.addStyleName(ValoTheme.LABEL_H1);
+        h1.addStyleName(ValoTheme.LABEL_H2);
         addComponent(h1);
 
         HorizontalLayout row = new HorizontalLayout();
@@ -79,6 +80,11 @@ public class Sensors extends VerticalLayout implements View {
 //        Button button = new Button("Button");
 //        button.setSizeFull();
 //        layout.addComponent(button);
+        PopupView sample = new PopupView(new PopUpWindow());
+        layout.addComponent(sample);
+        sample.setHideOnMouseOut(true);
+//        sample.setCaption("Hide on mouse-out");
+
         return layout;
     }
 

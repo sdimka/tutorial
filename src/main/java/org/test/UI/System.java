@@ -1,6 +1,5 @@
 package org.test.UI;
 
-import com.vaadin.addon.charts.Chart;
 import com.vaadin.navigator.View;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -17,7 +16,7 @@ public class System extends VerticalLayout implements View {
         setMargin(true);
 
         Label h1 = new Label("Что у нас есть:");
-        h1.addStyleName(ValoTheme.LABEL_H1);
+        h1.addStyleName(ValoTheme.LABEL_H2);
         addComponent(h1);
 
         Label mt = new Label("System: " + sys.getOS());
@@ -28,7 +27,7 @@ public class System extends VerticalLayout implements View {
         mt1.addStyleName(ValoTheme.LABEL_H3);
         addComponent(mt1);
 
-        Label mt2 = new Label(sys.getTotalMem() + " " + sys.getUsedMem() + " " + sys.getFreeMem());
+        Label mt2 = new Label(sys.getCPUTemp() + " CPU Temp");
         mt2.addStyleName(ValoTheme.LABEL_H3);
         addComponent(mt2);
 

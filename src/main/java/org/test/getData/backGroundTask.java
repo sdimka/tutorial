@@ -8,28 +8,36 @@ public class backGroundTask implements Runnable{
     double hum;
     double press;
     DataProvider dataProvider;
+    private
+    GetSensData gsd;
+
 
     @Override
     public void run() {
         dataProvider = DataProvider.getInst();
-//        GetSensData gsd = GetSensData.getInst();
+
 
         while (true) {
+
+            if (dataProvider.isSensorUse()){
+                gsd = GetSensData.getInst();
+                temp = gsd.getTemp();
+                hum = gsd.getHum();
+                press = gsd.getPressure();
+            } else {
+                time = LocalDateTime.now();
+                temp = Math.random() * 10;
+                hum = Math.random() * 100;
+                press = Math.random() * 750;
+            }
+
+            dataProvider.updateInfo(time,temp,hum,press);
+
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            time = LocalDateTime.now();
-            temp = Math.random() * 10;
-            hum = Math.random() * 100;
-            press = Math.random() * 750;
-
-//            temp = gsd.getTemp();
-//            hum = gsd.getHum();
-//            press = gsd.getPressure();
-
-            dataProvider.updateInfo(time,temp,hum,press);
         }
     }
 }

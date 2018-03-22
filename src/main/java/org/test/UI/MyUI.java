@@ -123,7 +123,7 @@ public class MyUI extends UI {
         showMenu.setIcon(FontAwesome.LIST);
         menu.addComponent(showMenu);
 
-        Label title = new Label("<h3>Моя <strong>Погодная Станция</strong></h3>",
+        Label title = new Label("<h3>Моя <strong>Погодная</strong></h3>",
                 ContentMode.HTML);
         title.setSizeUndefined();
         top.addComponent(title);

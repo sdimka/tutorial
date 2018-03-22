@@ -4,6 +4,7 @@ import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
+import oshi.hardware.Sensors;
 import oshi.software.os.OperatingSystem;
 import oshi.util.FormatUtil;
 
@@ -13,6 +14,7 @@ public class GetSystemInfo {
     private OperatingSystem os;
     private CentralProcessor processor;
     private GlobalMemory memory;
+    private Sensors sensors;
 
     private static GetSystemInfo instance = new GetSystemInfo();
 
@@ -22,6 +24,7 @@ public class GetSystemInfo {
         os = si.getOperatingSystem();
         processor = hal.getProcessor();
         memory = hal.getMemory();
+        sensors = hal.getSensors();
     }
 
     public static GetSystemInfo getInst() {
@@ -33,14 +36,14 @@ public class GetSystemInfo {
     }
 
     public float getUsedMem(){
-        return  (memory.getTotal() - memory.getAvailable()) / 1073741824;
+        return  (memory.getTotal() - memory.getAvailable()) / 1048576;
     }
     public float getTotalMem(){
-        return  memory.getTotal() / 1073741824;
+        return  memory.getTotal() / 1048576;
     }
 
     public float getFreeMem(){
-        return memory.getAvailable()/ 1073741824;
+        return memory.getAvailable()/ 1048576;
     }
 
     public String getSysUpTime(){
@@ -49,5 +52,9 @@ public class GetSystemInfo {
 
     public String getOS(){
         return os.toString();
+    }
+
+    public double getCPUTemp(){
+        return sensors.getCpuTemperature();
     }
 }

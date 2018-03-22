@@ -28,8 +28,8 @@ public class MemGraph extends AbstractVaadinChartExample {
     protected Component getChart() {
 
         Component ret = createChart();
-        ret.setWidth("100%");
-        ret.setHeight("400px");
+        ret.setWidth("500px");
+        ret.setHeight("250px");
         return ret;
     }
 
@@ -45,7 +45,7 @@ public class MemGraph extends AbstractVaadinChartExample {
         DataLabels dataLabels = new DataLabels();
         dataLabels.setEnabled(true);
         dataLabels
-                .setFormatter("'<b>'+ this.point.name +'</b>: '+ this.percentage +' %'");
+                .setFormatter("'<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(2) +' % '");
         plotOptions.setDataLabels(dataLabels);
         conf.setPlotOptions(plotOptions);
 

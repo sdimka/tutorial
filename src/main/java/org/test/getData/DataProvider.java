@@ -7,6 +7,7 @@ public class DataProvider {
     private volatile double currentTemp;
     private volatile double currentHum;
     private volatile double currentPress;
+    private volatile boolean sensorUse;
     private final String SQL_CREATE_TABLE =
             "DROP TABLE IF EXISTS " + "data" + ";" +
                     "CREATE TABLE " + "data" +
@@ -21,10 +22,11 @@ public class DataProvider {
         // GetSensData gsd = GetSensData.getInst();
 
         db = new DBexchange();
-        db.createTable(SQL_CREATE_TABLE);
+    //    db.createTable(SQL_CREATE_TABLE);
         currentTemp = 15;
         currentHum = 60;
         currentPress = 740;
+        sensorUse = false;
         backGroundTask BGT = new backGroundTask();
         new Thread(BGT).start();
     }
@@ -52,5 +54,13 @@ public class DataProvider {
 
     public double getHum() {
         return currentHum;
+    }
+
+    public boolean isSensorUse() {
+        return sensorUse;
+    }
+
+    public void enableSensor() {
+    //    this.sensorUse = true;
     }
 }
