@@ -2,6 +2,7 @@ package org.test.getData;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.*;
 
 public class DBexchange {
@@ -28,6 +29,13 @@ public class DBexchange {
     Statement stmt;
     ResultSet rs;
     String sql;
+
+    public static void main(String[] args) {
+        DBexchange db = new DBexchange();
+        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime begin = end.minus(Period.ofDays(3));
+        db.getListDataByPeriod(begin, end, "temp");
+    }
 
     DBexchange() {
         openDBFile(SQLITE_DB);
@@ -102,6 +110,22 @@ public class DBexchange {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    void getListDataByPeriod(LocalDateTime begin, LocalDateTime end, String param){
+        String sql = "SELECT " + param + " FROM " + NAME_TABLE + " WHERE time > " +
+                begin + " and time < " + end;
+
+        try {
+            rs = stmt.executeQuery(SQL_SELECT);
+            while (rs.next()){
+                System.out.println(rs.getString(param));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

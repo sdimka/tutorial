@@ -54,6 +54,7 @@ public class Settings extends VerticalLayout implements View {
 
         button.addClickListener(click ->{
             dataProvider.enableSensor();
+            dataProvider.detTempData();
             labelStat.removeStyleName(ValoTheme.LABEL_FAILURE);
             labelStat.addStyleName(ValoTheme.LABEL_SUCCESS);
             labelStat.setValue("Sensor connected!");

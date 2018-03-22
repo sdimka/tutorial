@@ -1,6 +1,7 @@
 package org.test.getData;
 
 import java.time.LocalDateTime;
+import java.time.Period;
 
 public class DataProvider {
     private static DataProvider instance = new DataProvider();
@@ -61,6 +62,12 @@ public class DataProvider {
     }
 
     public void enableSensor() {
-    //    this.sensorUse = true;
+//        this.sensorUse = true;
+    }
+
+    public void detTempData(){
+        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime begin = end.minus(Period.ofDays(3));
+        db.getListDataByPeriod(begin, end, "temp");
     }
 }
