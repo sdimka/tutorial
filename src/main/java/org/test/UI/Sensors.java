@@ -37,7 +37,7 @@ public class Sensors extends VerticalLayout implements View {
 
         dataProvider = DataProvider.getInst();
 
-        setMargin(true);
+        setMargin(false);
 
         Label h1 = new Label("Сводки с полей:");
         h1.addStyleName(ValoTheme.LABEL_H2);
@@ -72,14 +72,17 @@ public class Sensors extends VerticalLayout implements View {
         layout.setSizeFull();
         layout.setMargin(true);
         layout.setSpacing(true);
+
         Label content = new Label(
                 String.format( "%.2f", dataProvider.getTemp()) + " °C");
         content.setStyleName(ValoTheme.LABEL_BOLD);
         content.setWidth("10em");
         layout.addComponent(content);
+
 //        Button button = new Button("Button");
 //        button.setSizeFull();
 //        layout.addComponent(button);
+
         PopupView sample = new PopupView(new PopUpWindow());
         layout.addComponent(sample);
         sample.setHideOnMouseOut(true);
@@ -91,7 +94,7 @@ public class Sensors extends VerticalLayout implements View {
     Component panelContentHum() {
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
-        layout.setMargin(true);
+//        layout.setMargin(true);
         layout.setSpacing(true);
         Label content = new Label(
                 String.format("%.2f",dataProvider.getHum()) + "%");
@@ -106,7 +109,7 @@ public class Sensors extends VerticalLayout implements View {
     Component panelContentPress() {
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
-        layout.setMargin(true);
+//        layout.setMargin(true);
         layout.setSpacing(true);
         Label content = new Label(
                 String.format("%.2f",dataProvider.getPressure()) + " mmHg");

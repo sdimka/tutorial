@@ -1,7 +1,12 @@
 package org.test.getData;
 
+import com.vaadin.addon.charts.model.ListSeries;
+
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataProvider {
     private static DataProvider instance = new DataProvider();
@@ -23,7 +28,7 @@ public class DataProvider {
         // GetSensData gsd = GetSensData.getInst();
 
         db = new DBexchange();
-    //    db.createTable(SQL_CREATE_TABLE);
+     //   db.createTable(SQL_CREATE_TABLE);  // This will delete table with data!!!
         currentTemp = 15;
         currentHum = 60;
         currentPress = 740;
@@ -65,9 +70,43 @@ public class DataProvider {
 //        this.sensorUse = true;
     }
 
-    public void detTempData(){
+    public ListSeries getTempData(){
+
+        ListSeries ls = new ListSeries();
+        List<SensorsSet> lss;
+        List<SensorsSet> completedLss = new ArrayList<>();
         LocalDateTime end = LocalDateTime.now();
-        LocalDateTime begin = end.minus(Period.ofDays(3));
-        db.getListDataByPeriod(begin, end, "temp");
+        LocalDateTime begin = end.minus(Period.ofDays(1));
+
+        lss = db.getListDataByPeriod(begin, end, "temp");
+
+        int hoursCount = 1;
+        int count = 0;
+        double tempAccum = 0;
+        begin = lss.get(0).getTime();
+        System.out.println(begin);
+        System.out.println(begin.plusHours(hoursCount));
+        lss.forEach(a -> System.out.println(a.getTime() + " " + a.getTemp()));
+
+        for (SensorsSet s : lss){
+            if(s.getTime().isBefore(begin.plusHours(hoursCount))){
+                tempAccum += s.getTemp();
+                count ++;
+            } else {
+                completedLss.add(new SensorsSet(begin, tempAccum/count));
+                System.out.println(begin + " " + s.getTemp() + " " + tempAccum + " " + count);
+                tempAccum = s.getTemp();
+                count = 1;
+                begin = s.getTime();
+            }
+
+        }
+     //   completedLss.forEach(a-> System.out.println(a.getTemp()));
+        completedLss.forEach(a->ls.addData(a.getTemp()));
+//        for (int i = 0; i < 24; i++){
+//            begin = LocalDateTime.now();
+//            System.out.println(begin.plusHours(i).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+//        }
+        return ls;
     }
 }

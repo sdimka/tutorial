@@ -1,8 +1,10 @@
 package org.test.getData;
 
 import java.sql.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.*;
 
 public class DBexchange {
@@ -112,20 +114,25 @@ public class DBexchange {
         }
     }
 
-    void getListDataByPeriod(LocalDateTime begin, LocalDateTime end, String param){
-        String sql = "SELECT " + param + " FROM " + NAME_TABLE + " WHERE time > " +
-                begin + " and time < " + end;
+    public List<SensorsSet> getListDataByPeriod(LocalDateTime begin, LocalDateTime end, String param){
+
+        List<SensorsSet> res = new ArrayList<>();
+        String sql = "SELECT *" + " FROM " + NAME_TABLE + " WHERE time > " +
+                begin.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + //param +
+                 " AND time < " +
+                end.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
         try {
-            rs = stmt.executeQuery(SQL_SELECT);
+            rs = stmt.executeQuery(sql);
             while (rs.next()){
-                System.out.println(rs.getString(param));
+                res.add(new SensorsSet(LocalDateTime.ofInstant(Instant.ofEpochMilli(rs.getLong("time")),
+                        TimeZone.getDefault().toZoneId()),rs.getDouble(param)));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    return res;
     }
 }
 

@@ -13,7 +13,8 @@ public class System extends VerticalLayout implements View {
     public System(){
         sys = GetSystemInfo.getInst();
 
-        setMargin(true);
+        setMargin(false);
+        setSpacing(false);
 
         Label h1 = new Label("Что у нас есть:");
         h1.addStyleName(ValoTheme.LABEL_H2);

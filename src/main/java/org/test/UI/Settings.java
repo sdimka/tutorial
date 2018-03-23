@@ -14,6 +14,8 @@ public class Settings extends VerticalLayout implements View {
 
         dataProvider = DataProvider.getInst();
 
+        setMargin(false);
+
         Label h1 = new Label("Настройки:");
         h1.addStyleName(ValoTheme.LABEL_H2);
         addComponent(h1);
@@ -35,7 +37,7 @@ public class Settings extends VerticalLayout implements View {
     Component panelSensors() {
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
-        layout.setMargin(true);
+     //   layout.setMargin(true);
         layout.setSpacing(true);
 
         Label  labelStat;
@@ -54,7 +56,7 @@ public class Settings extends VerticalLayout implements View {
 
         button.addClickListener(click ->{
             dataProvider.enableSensor();
-            dataProvider.detTempData();
+            dataProvider.getTempData();
             labelStat.removeStyleName(ValoTheme.LABEL_FAILURE);
             labelStat.addStyleName(ValoTheme.LABEL_SUCCESS);
             labelStat.setValue("Sensor connected!");

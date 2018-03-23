@@ -9,11 +9,14 @@ import com.vaadin.addon.charts.model.style.Theme;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.themes.ValoTheme;
 import org.test.UI.AbstractVaadinChartExample;
+import org.test.getData.DataProvider;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 
 public class TempChart extends AbstractVaadinChartExample {
+
+    private DataProvider dataProvider;
 
     private static final int ONE_HOUR = 60 * 60 * 1000;
     private static final SolidColor TRANSPARENT = new SolidColor(0, 0, 0, 0);
@@ -28,6 +31,9 @@ public class TempChart extends AbstractVaadinChartExample {
     @SuppressWarnings("deprecation")
     @Override
     protected Component getChart() {
+
+        dataProvider = DataProvider.getInst();
+
         Chart chart = new Chart();
         chart.setHeight("300px");
        // chart.setWidth("100%");
@@ -35,7 +41,10 @@ public class TempChart extends AbstractVaadinChartExample {
         Configuration configuration = chart.getConfiguration();
         configuration.getChart().setType(ChartType.SPLINE);
 
-        configuration.getTitle().setText("Temp during two days");
+        Style style1 = new Style();
+        style1.setFontSize("12");
+        configuration.getTitle().setStyle(style1);
+        configuration.getTitle().setText("Temp during 24 hours");
 
         configuration.getxAxis().setType(AxisType.DATETIME);
 
@@ -93,16 +102,16 @@ public class TempChart extends AbstractVaadinChartExample {
         plotOptions.getMarker().setStates(states);
 
         plotOptions.setPointInterval(ONE_HOUR);
-        LocalDate date = LocalDate.of(2009, 9, 6);
+        LocalDate date = LocalDate.now();
         plotOptions.setPointStart(date.atStartOfDay().toInstant(ZoneOffset.UTC));
 
-        ListSeries ls = new ListSeries();
+        ListSeries ls = dataProvider.getTempData();
         ls.setName("Temp");
-        ls.setData(4.3, 5.1, 4.3, 5.2, 5.4, 4.7, 3.5, 4.1, 5.6, 7.4, 6.9, 7.1,
-                7.9, 7.9, 7.5, 6.7, 7.7, 7.7, 7.4, 7.0, 7.1, 5.8, 5.9, 7.4,
-                8.2, 8.5, 9.4, 8.1, 10.9, 10.4, 10.9, 12.4, 12.1, 9.5, 7.5,
-                7.1, 7.5, 8.1, 6.8, 3.4, 2.1, 1.9, 2.8, 2.9, 1.3, 4.4, 4.2,
-                3.0, 3.0);
+//        ls.setData(4.3, 5.1, 4.3, 5.2, 5.4, 4.7, 3.5, 4.1, 5.6, 7.4, 6.9, 7.1,
+//                7.9, 7.9, 7.5, 6.7, 7.7, 7.7, 7.4, 7.0, 7.1, 5.8, 5.9, 7.4,
+//                8.2, 8.5, 9.4, 8.1, 10.9, 10.4, 10.9, 12.4, 12.1, 9.5, 7.5,
+//                7.1, 7.5, 8.1, 6.8, 3.4, 2.1, 1.9, 2.8, 2.9, 1.3, 4.4, 4.2,
+//                3.0, 3.0);
         configuration.addSeries(ls);
 
         chart.drawChart(configuration);
