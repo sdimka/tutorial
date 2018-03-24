@@ -21,6 +21,7 @@ public class backGroundTask implements Runnable{
 
             if (dataProvider.isSensorUse()){
                 gsd = GetSensData.getInst();
+                time = LocalDateTime.now();
                 temp = gsd.getTemp();
                 hum = gsd.getHum();
                 press = gsd.getPressure();

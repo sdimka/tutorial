@@ -8,15 +8,14 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.icons.*;
 import com.vaadin.navigator.View;
-import com.vaadin.server.Resource;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.*;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.test.UI.historyWindow.PopUpWindow;
 import org.test.getData.DataProvider;
 import org.test.getData.GetSensData;
 
+import java.io.File;
 import java.time.LocalDateTime;
 
 
@@ -65,6 +64,7 @@ public class Sensors extends VerticalLayout implements View {
         panel2.addStyleName("color3");
         panel2.setContent(panelContentHum());
         row.addComponent(panel2);
+
     }
 
     Component panelContentTemp() {
@@ -104,6 +104,7 @@ public class Sensors extends VerticalLayout implements View {
         //Button button1 = new Button("Button1");
         //button1.setSizeFull();
         //layout.addComponent(button1);
+
         return layout;
     }
     Component panelContentPress() {

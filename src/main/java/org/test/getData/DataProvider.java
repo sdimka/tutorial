@@ -1,6 +1,7 @@
 package org.test.getData;
 
 import com.vaadin.addon.charts.model.ListSeries;
+import com.vaadin.data.provider.ListDataProvider;
 
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -67,7 +68,7 @@ public class DataProvider {
     }
 
     public void enableSensor() {
-//        this.sensorUse = true;
+        this.sensorUse = true;
     }
 
     public ListSeries getTempData(){
@@ -84,9 +85,9 @@ public class DataProvider {
         int count = 0;
         double tempAccum = 0;
         begin = lss.get(0).getTime();
-        System.out.println(begin);
-        System.out.println(begin.plusHours(hoursCount));
-        lss.forEach(a -> System.out.println(a.getTime() + " " + a.getTemp()));
+//        System.out.println(begin);
+//        System.out.println(begin.plusHours(hoursCount));
+//        lss.forEach(a -> System.out.println(a.getTime() + " " + a.getTemp()));
 
         for (SensorsSet s : lss){
             if(s.getTime().isBefore(begin.plusHours(hoursCount))){
@@ -94,7 +95,7 @@ public class DataProvider {
                 count ++;
             } else {
                 completedLss.add(new SensorsSet(begin, tempAccum/count));
-                System.out.println(begin + " " + s.getTemp() + " " + tempAccum + " " + count);
+//                System.out.println(begin + " " + s.getTemp() + " " + tempAccum + " " + count);
                 tempAccum = s.getTemp();
                 count = 1;
                 begin = s.getTime();
@@ -108,5 +109,12 @@ public class DataProvider {
 //            System.out.println(begin.plusHours(i).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 //        }
         return ls;
+    }
+
+    public List<SensorsSet> getRowData(int recordsNumber){
+       List<SensorsSet> sensorSetList = new ArrayList<>();
+
+
+       return sensorSetList;
     }
 }

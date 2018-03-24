@@ -19,6 +19,7 @@ import org.test.getData.DataProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -132,9 +133,13 @@ public class MyUI extends UI {
         MenuBar settings = new MenuBar();
         settings.addStyleName("user-menu");
 
+        String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+        FileResource imgRes = new FileResource(new File(basepath +
+                "/WEB-INF/images/sun.png"));
+        // Image image = new Image("Image from file", resource);
+
         MenuBar.MenuItem settingsItem = settings.addItem("Менюшка на всякий случай",
-                new ClassResource("profile-pic-300px.jpg"),
-                null);
+                imgRes, null);
         settingsItem.addItem("Edit Profile", null);
         settingsItem.addItem("Preferences", null);
         settingsItem.addSeparator();
