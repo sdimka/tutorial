@@ -16,8 +16,7 @@ public class DataProvider {
     private volatile double currentPress;
     private volatile boolean sensorUse;
     private final String SQL_CREATE_TABLE =
-            "DROP TABLE IF EXISTS " + "data" + ";" +
-                    "CREATE TABLE " + "data" +
+            "CREATE TABLE IF NOT EXISTS " + "data" +
                     "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     " time DATETIME, " +
                     " temp DOUBLE," +
@@ -29,7 +28,7 @@ public class DataProvider {
         // GetSensData gsd = GetSensData.getInst();
 
         db = new DBexchange();
-     //   db.createTable(SQL_CREATE_TABLE);  // This will delete table with data!!!
+        db.createTable(SQL_CREATE_TABLE);  //
         currentTemp = 15;
         currentHum = 60;
         currentPress = 740;
@@ -71,7 +70,7 @@ public class DataProvider {
         this.sensorUse = true;
     }
 
-    public ListSeries getTempData(){
+    public ListSeries get24HData(String dataType){
 
         ListSeries ls = new ListSeries();
         List<SensorsSet> lss;
@@ -79,7 +78,7 @@ public class DataProvider {
         LocalDateTime end = LocalDateTime.now();
         LocalDateTime begin = end.minus(Period.ofDays(1));
 
-        lss = db.getListDataByPeriod(begin, end, "temp");
+        lss = db.getListDataByPeriod(begin, end, dataType);
 
         int hoursCount = 1;
         int count = 0;
@@ -102,7 +101,7 @@ public class DataProvider {
             }
 
         }
-     //   completedLss.forEach(a-> System.out.println(a.getTemp()));
+        completedLss.forEach(a-> System.out.println(a.getTemp()));
         completedLss.forEach(a->ls.addData(a.getTemp()));
 //        for (int i = 0; i < 24; i++){
 //            begin = LocalDateTime.now();

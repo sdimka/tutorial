@@ -12,6 +12,8 @@ import com.vaadin.server.*;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.test.UI.historyWindow.PopUpWindow;
+import org.test.UI.historyWindow.PressChart;
+import org.test.UI.historyWindow.TempChart;
 import org.test.getData.DataProvider;
 import org.test.getData.GetSensData;
 
@@ -83,7 +85,7 @@ public class Sensors extends VerticalLayout implements View {
 //        button.setSizeFull();
 //        layout.addComponent(button);
 
-        PopupView sample = new PopupView(new PopUpWindow());
+        PopupView sample = new PopupView(new PopUpWindow(TempChart.class));
         layout.addComponent(sample);
         sample.setHideOnMouseOut(true);
 //        sample.setCaption("Hide on mouse-out");
@@ -117,9 +119,11 @@ public class Sensors extends VerticalLayout implements View {
         content.setStyleName(ValoTheme.LABEL_BOLD);
         content.setWidth("10em");
         layout.addComponent(content);
-//        Button button2 = new Button("Button2");
-//        button2.setSizeFull();
-//        layout.addComponent(button2);
+
+        PopupView sample = new PopupView(new PopUpWindow(PressChart.class));
+        layout.addComponent(sample);
+        sample.setHideOnMouseOut(true);
+
         return layout;
     }
 }

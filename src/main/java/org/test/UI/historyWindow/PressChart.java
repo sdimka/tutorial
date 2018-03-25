@@ -10,7 +10,7 @@ import org.test.getData.DataProvider;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 
-public class TempChart extends ChartInterface  {
+public class PressChart extends ChartInterface  {
 
     private DataProvider dataProvider;
 
@@ -21,7 +21,7 @@ public class TempChart extends ChartInterface  {
 
     @Override
     public String getDescription() {
-        return "Temperature chart";
+        return "Pressure chart";
     }
 
     @SuppressWarnings("deprecation")
@@ -32,21 +32,21 @@ public class TempChart extends ChartInterface  {
 
         Chart chart = new Chart();
         chart.setHeight("300px");
-       // chart.setWidth("100%");
+        // chart.setWidth("100%");
 
         Configuration configuration = chart.getConfiguration();
         configuration.getChart().setType(ChartType.SPLINE);
 
         Style style1 = new Style();
-        style1.setFontSize("12");
+        style1.setFontSize("14");
         configuration.getTitle().setStyle(style1);
-        configuration.getTitle().setText("Temp during 24 hours");
+        configuration.getTitle().setText("Pressure during 24 hours");
 
         configuration.getxAxis().setType(AxisType.DATETIME);
 
         YAxis yAxis = configuration.getyAxis();
-        yAxis.setTitle(new AxisTitle("Temp °C"));
-        yAxis.setMin(-10);
+        yAxis.setTitle(new AxisTitle("Pressure mmHg"));
+        yAxis.setMin(720);
         yAxis.setMinorGridLineWidth(0);
         yAxis.setGridLineWidth(0);
 
@@ -58,24 +58,24 @@ public class TempChart extends ChartInterface  {
         style.setColor(LIGHT_GRAY);
 
         final PlotBand lightAir = new PlotBand();
-        lightAir.setFrom(-10);
-        lightAir.setTo(0);
+        lightAir.setFrom(720);
+        lightAir.setTo(750);
         lightAir.setColor(LIGHT_BLUE);
-        lightAir.setLabel(new Label("Cold"));
+        lightAir.setLabel(new Label("Low"));
         lightAir.getLabel().setStyle(style);
 
         final PlotBand lightBreeze = new PlotBand();
-        lightBreeze.setFrom(0);
-        lightBreeze.setTo(15);
+        lightBreeze.setFrom(750);
+        lightBreeze.setTo(755);
         lightBreeze.setColor(TRANSPARENT);
-        lightBreeze.setLabel(new Label("Moderate"));
+        lightBreeze.setLabel(new Label("Normal"));
         lightBreeze.getLabel().setStyle(style);
 
         final PlotBand gentleBreeze = new PlotBand();
-        gentleBreeze.setFrom(15);
-        gentleBreeze.setTo(30);
+        gentleBreeze.setFrom(755);
+        gentleBreeze.setTo(790);
         gentleBreeze.setColor(LIGHT_BLUE);
-        gentleBreeze.setLabel(new Label("Normal"));
+        gentleBreeze.setLabel(new Label("Hi"));
         gentleBreeze.getLabel().setStyle(style);
 
         yAxis.setPlotBands(lightAir, lightBreeze, gentleBreeze);
@@ -101,16 +101,13 @@ public class TempChart extends ChartInterface  {
         LocalDate date = LocalDate.now();
         plotOptions.setPointStart(date.atStartOfDay().toInstant(ZoneOffset.UTC));
 
-        ListSeries ls = dataProvider.get24HData("temp");
-        ls.setName("Temp");
-//        ls.setData(4.3, 5.1, 4.3, 5.2, 5.4, 4.7, 3.5, 4.1, 5.6, 7.4, 6.9, 7.1,
-//                7.9, 7.9, 7.5, 6.7, 7.7, 7.7, 7.4, 7.0, 7.1, 5.8, 5.9, 7.4,
-//                8.2, 8.5, 9.4, 8.1, 10.9, 10.4, 10.9, 12.4, 12.1, 9.5, 7.5,
-//                7.1, 7.5, 8.1, 6.8, 3.4, 2.1, 1.9, 2.8, 2.9, 1.3, 4.4, 4.2,
-//                3.0, 3.0);
+        ListSeries ls = dataProvider.get24HData("press");
+        ls.setName("Pressure");
+
         configuration.addSeries(ls);
 
         chart.drawChart(configuration);
         return chart;
     }
 }
+
