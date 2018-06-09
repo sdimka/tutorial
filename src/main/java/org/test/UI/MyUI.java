@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
+@Viewport("user-scalable=no,initial-scale=1.0")
 @Theme("mytheme")
 @Title("Valo Theme Test")
 @StyleSheet("valo-theme-ui.css")
@@ -44,7 +44,6 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-
 
         Responsive.makeResponsive(this);
 
