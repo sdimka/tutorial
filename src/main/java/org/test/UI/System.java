@@ -6,6 +6,10 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import org.test.oshi.GetSystemInfo;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class System extends VerticalLayout implements View {
 
     GetSystemInfo sys;
@@ -27,6 +31,12 @@ public class System extends VerticalLayout implements View {
         Label mt1 = new Label("Uptime: " + sys.getSysUpTime());
         mt1.addStyleName(ValoTheme.LABEL_H3);
         addComponent(mt1);
+
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Label mt1a = new Label("System time: " + dateFormat.format(date));
+        mt1a.addStyleName(ValoTheme.LABEL_H3);
+        addComponent(mt1a);
 
         Label mt2 = new Label(sys.getCPUTemp() + " CPU Temp");
         mt2.addStyleName(ValoTheme.LABEL_H3);

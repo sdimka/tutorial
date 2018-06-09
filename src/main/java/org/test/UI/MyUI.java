@@ -27,7 +27,7 @@ import java.util.Map;
 
 @Theme("mytheme")
 @Title("Valo Theme Test")
-// @StyleSheet("valo-theme-ui.css")
+@StyleSheet("valo-theme-ui.css")
 @PreserveOnRefresh
 
 public class MyUI extends UI {
@@ -44,6 +44,10 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
+
+
+        Responsive.makeResponsive(this);
+
         getPage().setTitle("Hello My New Suite!");
         setContent(root);
         root.setWidth("100%");
