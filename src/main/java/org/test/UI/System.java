@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class System extends VerticalLayout implements View {
 
@@ -34,8 +35,9 @@ public class System extends VerticalLayout implements View {
         mt1.addStyleName(ValoTheme.LABEL_H3);
         addComponent(mt1);
 
-        LocalDateTime date = LocalDateTime.now();
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
         Label mt1a = new Label("System time: " + dateFormat.format(date));
         mt1a.addStyleName(ValoTheme.LABEL_H3);
         addComponent(mt1a);
