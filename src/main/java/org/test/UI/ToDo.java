@@ -6,4 +6,6 @@ public class ToDo {
     // ToDO прибить TestIcon
     // ToDo инициализация сенсора
     // ToDo Варианты графиков
+    // ToDo разобраться с <version>${project.version}</version>
+    // ToDo systemInfo на pi4j
 }
