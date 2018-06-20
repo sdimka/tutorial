@@ -32,8 +32,6 @@ import java.util.Map;
 
 public class MyUI extends UI {
 
-    private TestIcon testIcon = new TestIcon(100);
-
     ValoMenuLayout root = new ValoMenuLayout();
     ComponentContainer viewDisplay = root.getContentContainer();
     CssLayout menu = new CssLayout();
@@ -124,7 +122,7 @@ public class MyUI extends UI {
         showMenu.addStyleName(ValoTheme.BUTTON_PRIMARY);
         showMenu.addStyleName(ValoTheme.BUTTON_SMALL);
         showMenu.addStyleName("valo-menu-toggle");
-        showMenu.setIcon(FontAwesome.LIST);
+        showMenu.setIcon(VaadinIcons.LIST);
         menu.addComponent(showMenu);
 
         Label title = new Label("<h3>Моя <strong>Погодная</strong></h3>",

@@ -41,7 +41,7 @@ public class Sensors extends VerticalLayout implements View {
         setMargin(false);
 
         Label h1 = new Label("Сводки с полей:");
-        h1.addStyleName(ValoTheme.LABEL_H2);
+        h1.addStyleName(ValoTheme.LABEL_H3);
         addComponent(h1);
 
         HorizontalLayout row = new HorizontalLayout();

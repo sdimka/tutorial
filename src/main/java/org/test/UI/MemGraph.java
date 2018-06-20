@@ -10,6 +10,7 @@ import com.vaadin.addon.charts.model.DataLabels;
 import com.vaadin.addon.charts.model.DataSeries;
 import com.vaadin.addon.charts.model.DataSeriesItem;
 import com.vaadin.addon.charts.model.PlotOptionsPie;
+import com.vaadin.addon.charts.model.style.Style;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import org.test.oshi.GetSystemInfo;
@@ -38,7 +39,10 @@ public class MemGraph extends AbstractVaadinChartExample {
 
         Configuration conf = chart.getConfiguration();
 
+        Style style1 = new Style();
+        style1.setFontSize("14");
         conf.setTitle("Mem usage");
+        conf.getTitle().setStyle(style1);
 
         PlotOptionsPie plotOptions = new PlotOptionsPie();
         plotOptions.setCursor(Cursor.POINTER);

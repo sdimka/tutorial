@@ -24,26 +24,26 @@ public class System extends VerticalLayout implements View {
         setSpacing(false);
 
         Label h1 = new Label("Что у нас есть:");
-        h1.addStyleName(ValoTheme.LABEL_H2);
+        h1.addStyleName(ValoTheme.LABEL_H3);
         addComponent(h1);
 
         Label mt = new Label("System: " + sys.getOS());
-        mt.addStyleName(ValoTheme.LABEL_H3);
+        mt.addStyleName(ValoTheme.LABEL_SMALL);
         addComponent(mt);
 
         Label mt1 = new Label("Uptime: " + sys.getSysUpTime());
-        mt1.addStyleName(ValoTheme.LABEL_H3);
+        mt1.addStyleName(ValoTheme.LABEL_SMALL);
         addComponent(mt1);
 
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
         Label mt1a = new Label("System time: " + dateFormat.format(date));
-        mt1a.addStyleName(ValoTheme.LABEL_H3);
+        mt1a.addStyleName(ValoTheme.LABEL_SMALL);
         addComponent(mt1a);
 
         Label mt2 = new Label(sys.getCPUTemp() + " CPU Temp");
-        mt2.addStyleName(ValoTheme.LABEL_H3);
+        mt2.addStyleName(ValoTheme.LABEL_SMALL);
         addComponent(mt2);
 
         CpuGraph chart = new CpuGraph();

@@ -7,7 +7,9 @@ import java.util.Random;
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.*;
 import com.vaadin.addon.charts.model.style.SolidColor;
+import com.vaadin.addon.charts.model.style.Style;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.themes.ValoTheme;
 import org.test.oshi.GetSystemInfo;
 
 public class CpuGraph extends AbstractVaadinChartExample {
@@ -27,9 +29,13 @@ public class CpuGraph extends AbstractVaadinChartExample {
         chart.setWidth("500px");
         chart.setHeight("250px");
 
+        Style style1 = new Style();
+        style1.setFontSize("14");
+
         final Configuration configuration = chart.getConfiguration();
         configuration.getChart().setType(ChartType.SPLINE);
         configuration.getTitle().setText("Current CPU Load");
+        configuration.getTitle().setStyle(style1);
 
         XAxis xAxis = configuration.getxAxis();
         xAxis.setType(AxisType.DATETIME);
