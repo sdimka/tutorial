@@ -1,5 +1,8 @@
 package org.test.UI;
 
+import com.pi4j.platform.Platform;
+import com.pi4j.platform.PlatformAlreadyAssignedException;
+import com.pi4j.platform.PlatformManager;
 import com.vaadin.annotations.*;
 
 import com.vaadin.event.Action;
@@ -216,6 +219,11 @@ public class MyUI extends UI {
         @Override
         protected void servletInitialized() throws ServletException {
             DataProvider dataProvider = DataProvider.getInst();
+            try {
+                PlatformManager.setPlatform(Platform.ODROID);
+            } catch (PlatformAlreadyAssignedException e) {
+                e.printStackTrace();
+            }
             super.servletInitialized();
             getService().addSessionInitListener(
                     new ValoThemeSessionInitListener());

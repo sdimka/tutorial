@@ -54,7 +54,7 @@ public class GetSensData {
 
     private GetSensData(){
         try {
-            PlatformManager.setPlatform(Platform.ODROID);
+            //PlatformManager.setPlatform(Platform.ODROID);
             i2c = I2CFactory.getInstance(I2CBus.BUS_1);
             device = i2c.getDevice(BME280_ADDR);
         } catch (Exception e) {

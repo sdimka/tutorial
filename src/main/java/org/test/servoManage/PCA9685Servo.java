@@ -1,8 +1,8 @@
 package org.test.servoManage;
 
 import com.pi4j.gpio.extension.pca.PCA9685GpioProvider;
+import com.pi4j.gpio.extension.pca.PCA9685Pin;
 import com.pi4j.io.gpio.*;
-import com.pi4j.io.gpio.impl.PinImpl;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.platform.Platform;
@@ -11,8 +11,6 @@ import com.pi4j.platform.PlatformManager;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.EnumSet;
 
 public class PCA9685Servo {
 
@@ -24,18 +22,7 @@ public class PCA9685Servo {
     private static final int SERVO_DURATION_MAX = 2100;
     private I2CBus bus;
     private PCA9685GpioProvider provider;
-    private GpioPinPwmOutput[] myOutputs = new GpioPinPwmOutput[15];
-
-    private static ArrayList<Pin> pins = new ArrayList<>();
-    static {
-        pins.add(createPwmPin(0, "PWM 0"));
-        pins.add(createPwmPin(1, "PWM 0"));
-        pins.add(createPwmPin(2, "PWM 0"));
-    }
-
-    private static Pin createPwmPin(int channel, String name) {
-        return new PinImpl("com.pi4j.gpio.extension.pca.PCA9685GpioProvider", channel, name, EnumSet.of(PinMode.PWM_OUTPUT));
-    }
+    private GpioPinPwmOutput[] myOutputs;
 
     public static PCA9685Servo getInstance(){
         return instance;
@@ -53,11 +40,10 @@ public class PCA9685Servo {
         BigDecimal frequencyCorrectionFactor = new BigDecimal("1.0578");
 
         try {
-            PlatformManager.setPlatform(Platform.ODROID);
+            //PlatformManager.setPlatform(Platform.ODROID);
             bus = I2CFactory.getInstance(I2CBus.BUS_2);
             provider = new PCA9685GpioProvider(bus, 0x40, frequency, frequencyCorrectionFactor);
-        } catch (PlatformAlreadyAssignedException e) {
-            e.printStackTrace();
+
         } catch (I2CFactory.UnsupportedBusNumberException e) {
             e.printStackTrace();
             isReal = false;
@@ -68,9 +54,7 @@ public class PCA9685Servo {
         // Define outputs in use for this example
         if (isReal) {
             GpioController gpio = GpioFactory.getInstance();
-            for (int i = 0; i < pins.size(); i++) {
-                myOutputs[i] = gpio.provisionPwmOutputPin(provider, pins.get(i), "Servo" + i);
-            }
+            myOutputs = provisionPwmOutputs(provider);
             // Reset outputs
             provider.reset();
         }
@@ -82,26 +66,20 @@ public class PCA9685Servo {
 
     public int GetPosition (int pinNumber){ // Return position in percent from neutral
         if (isReal) {
-            if (checkPinExist(pinNumber))
-                return (provider.getPwm(pins.get(pinNumber)) - 1500) / 6;
-            else return -1;
+            return provider.getPwmOnOffValues(myOutputs[pinNumber].getPin())[0];//) - 1500) / 6;
         } else return 50;
     }
 
-    private boolean checkPinExist(int pinNumber){
-        if (pinNumber < pins.size() - 1 )
-            return true;
-        else return false;
+    public int[] GetPwm (int pinNumber){
+        return provider.getPwmOnOffValues(myOutputs[pinNumber].getPin());
     }
 
     public void Move(int pinNubmer, int newPosition){ // ToDo Change position to percent
         // 0% - 1500 100% - 2100, 1% = 6
-        if (checkPinExist(pinNubmer)){
             if (GetPosition(pinNubmer) != newPosition){
                 Mover mover = new Mover(pinNubmer, newPosition);
                 mover.start();
             }
-        }
     }
 
 
@@ -113,7 +91,7 @@ public class PCA9685Servo {
         private Pin pin;
 
         public Mover(int pinNumber, int newPosition) {
-            this.pin = pins.get(pinNumber);
+            this.pin = myOutputs[pinNumber].getPin();
             this.newPosition = (newPosition * 6) + 1500;
         }
 
@@ -130,5 +108,27 @@ public class PCA9685Servo {
                 }
             }
         }
+    }
+
+    private static GpioPinPwmOutput[] provisionPwmOutputs(final PCA9685GpioProvider gpioProvider) {
+        GpioController gpio = GpioFactory.getInstance();
+        GpioPinPwmOutput myOutputs[] = {
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_00, "Pulse 00"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_01, "Pulse 01"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_02, "Pulse 02"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_03, "Pulse 03"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_04, "Pulse 04"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_05, "Pulse 05"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_06, "Pulse 06"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_07, "Pulse 07"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_08, "Pulse 08"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_09, "Pulse 09"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_10, "Always ON"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_11, "Always OFF"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_12, "Servo pulse MIN"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_13, "Servo pulse NEUTRAL"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_14, "Servo pulse MAX"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_15, "not used")};
+        return myOutputs;
     }
 }
