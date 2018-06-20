@@ -6,14 +6,17 @@ import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.test.getData.DataProvider;
+import org.test.servoManage.PCA9685Servo;
 
 public class Settings extends VerticalLayout implements View {
 
     private DataProvider dataProvider;
+    private PCA9685Servo pca9685Servo;
 
     public Settings() {
 
         dataProvider = DataProvider.getInst();
+        pca9685Servo = PCA9685Servo.getInstance();
 
         setMargin(false);
 
@@ -78,27 +81,41 @@ public class Settings extends VerticalLayout implements View {
         //   layout.setMargin(true);
         layout.setSpacing(true);
 
+        Label  labelStat;
+        if (pca9685Servo.isReal()){
+            labelStat = new Label("Servos connected!");
+            labelStat.addStyleName(ValoTheme.LABEL_SUCCESS);
+        } else {
+            labelStat = new Label("In fake mode!");
+            labelStat.addStyleName(ValoTheme.LABEL_FAILURE);
+        }
+        layout.addComponent(labelStat);
+
         Slider slider = new Slider("First Servo");
-        slider.setValue(50.0);
+        slider.setValue((double)pca9685Servo.GetPosition(0));
         slider.setWidth("200px");
         slider.addStyleName("color2");
         slider.setOrientation(SliderOrientation.HORIZONTAL);
         layout.addComponent(slider);
 
-        slider.addValueChangeListener(event -> Notification.show("Value changed:",
+        slider.addValueChangeListener(event -> {Notification.show("Value changed:",
                 String.valueOf(event.getValue()),
-                Notification.Type.TRAY_NOTIFICATION));
+                Notification.Type.TRAY_NOTIFICATION);
+                pca9685Servo.Move(0, event.getValue().intValue());
+        });
 
         Slider slider1 = new Slider("Second Servo");
-        slider1.setValue(50.0);
+        slider1.setValue((double)pca9685Servo.GetPosition(0));
         slider1.setWidth("200px");
         slider1.addStyleName("color2");
         slider1.setOrientation(SliderOrientation.HORIZONTAL);
         layout.addComponent(slider1);
 
-        slider1.addValueChangeListener(event -> Notification.show("Value changed:",
+        slider1.addValueChangeListener(event -> {Notification.show("Value changed:",
                 String.valueOf(event.getValue()),
-                Notification.Type.TRAY_NOTIFICATION));
+                Notification.Type.TRAY_NOTIFICATION);
+            pca9685Servo.Move(1, event.getValue().intValue());
+        });
 
         return layout;
     }

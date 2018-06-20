@@ -98,6 +98,7 @@ public class PCA9685GpioExample {
         provider.setAlwaysOn(PCA9685Pin.PWM_10);
         // Set full OFF
         provider.setAlwaysOff(PCA9685Pin.PWM_11);
+
         // Set 0.9ms pulse (R/C Servo minimum position)
         provider.setPwm(PCA9685Pin.PWM_12, SERVO_DURATION_MIN);
         // Set 1.5ms pulse (R/C Servo neutral position)
