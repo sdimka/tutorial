@@ -23,6 +23,7 @@ public class PCA9685Servo {
     private I2CBus bus;
     private PCA9685GpioProvider provider;
     private GpioPinPwmOutput[] myOutputs;
+    private ServoCoordinates servoCoordinates;
 
     public static PCA9685Servo getInstance(){
         return instance;
@@ -31,6 +32,7 @@ public class PCA9685Servo {
     private PCA9685Servo(){
 
         isReal = true;
+        servoCoordinates = ServoCoordinates.getInstance();
 
         BigDecimal frequency = new BigDecimal("48.828");
         // Correction factor: actualFreq / targetFreq
@@ -65,16 +67,15 @@ public class PCA9685Servo {
     }
 
     public int GetPosition (int pinNumber){ // Return position in percent from neutral
-        if (isReal) {
-            return provider.getPwmOnOffValues(myOutputs[pinNumber].getPin())[0];//) - 1500) / 6;
-        } else return 50;
+        return (servoCoordinates.getCoord(pinNumber) - 1500) / 6;
+
     }
 
-    public int[] GetPwm (int pinNumber){
-        return provider.getPwmOnOffValues(myOutputs[pinNumber].getPin());
-    }
+//    public int[] GetPwm (int pinNumber){
+//        return provider.getPwmOnOffValues(myOutputs[pinNumber].getPin());
+//    }
 
-    public void Move(int pinNubmer, int newPosition){ // ToDo Change position to percent
+    public void Move(int pinNubmer, int newPosition){ // Change position in percent
         // 0% - 1500 100% - 2100, 1% = 6
             if (GetPosition(pinNubmer) != newPosition){
                 Mover mover = new Mover(pinNubmer, newPosition);
@@ -88,34 +89,51 @@ public class PCA9685Servo {
         private final int step = 6;
         private final int maxSleepBetweenSteps = 100;
         private int newPosition; // Position in wave lenight
-        private Pin pin;
+        private int pinNumber;
 
         public Mover(int pinNumber, int newPosition) {
-            this.pin = myOutputs[pinNumber].getPin();
+            this.pinNumber = pinNumber;
             this.newPosition = (newPosition * 6) + 1500;
         }
 
         @Override
         public void run() {
-            int currentPosition = provider.getPwm(pin);
-            while (currentPosition < newPosition) {
-                currentPosition += step;
-                provider.setPwm(pin, currentPosition);
-                try {
-                    Thread.sleep(maxSleepBetweenSteps/speed);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            int currentPosition = servoCoordinates.getCoord(pinNumber);
+            if (currentPosition < newPosition) {
+                while (currentPosition <= newPosition) {
+                    currentPosition += step;
+                    if (isReal) {
+                        provider.setPwm(myOutputs[pinNumber].getPin(), currentPosition);
+                    }
+                    try {
+                        Thread.sleep(maxSleepBetweenSteps / speed);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (currentPosition > newPosition) {
+                while (currentPosition >= newPosition) {
+                    currentPosition -= step;
+                    if (isReal) {
+                        provider.setPwm(myOutputs[pinNumber].getPin(), currentPosition);
+                    }
+                    try {
+                        Thread.sleep(maxSleepBetweenSteps / speed);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+            servoCoordinates.setCoord(pinNumber, currentPosition);
         }
     }
 
     private static GpioPinPwmOutput[] provisionPwmOutputs(final PCA9685GpioProvider gpioProvider) {
         GpioController gpio = GpioFactory.getInstance();
         GpioPinPwmOutput myOutputs[] = {
-                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_00, "Pulse 00"),
-                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_01, "Pulse 01"),
-                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_02, "Pulse 02"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_00, "Servo 00"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_01, "Servo 01"),
+                gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_02, "Servo 02"),
                 gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_03, "Pulse 03"),
                 gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_04, "Pulse 04"),
                 gpio.provisionPwmOutputPin(gpioProvider, PCA9685Pin.PWM_05, "Pulse 05"),

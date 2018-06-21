@@ -91,12 +91,6 @@ public class Settings extends VerticalLayout implements View {
         }
         layout.addComponent(labelStat);
 
-        Label  labelStat2;
-        labelStat2 = new Label(pca9685Servo.GetPwm(0)[0] + " "
-         + pca9685Servo.GetPwm(0)[1]);
-        labelStat2.addStyleName(ValoTheme.LABEL_FAILURE);
-        layout.addComponent(labelStat2);
-
         Slider slider = new Slider("First Servo");
         slider.setValue((double)pca9685Servo.GetPosition(0));
         slider.setWidth("200px");
@@ -111,7 +105,7 @@ public class Settings extends VerticalLayout implements View {
         });
 
         Slider slider1 = new Slider("Second Servo");
-        slider1.setValue((double)pca9685Servo.GetPosition(0));
+        slider1.setValue((double)pca9685Servo.GetPosition(1));
         slider1.setWidth("200px");
         slider1.addStyleName("color2");
         slider1.setOrientation(SliderOrientation.HORIZONTAL);
