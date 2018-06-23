@@ -100,7 +100,7 @@ public class PCA9685Servo {
         public void run() {
             int currentPosition = servoCoordinates.getCoord(pinNumber);
             if (currentPosition < newPosition) {
-                while (currentPosition <= newPosition) {
+                while (currentPosition < newPosition) {
                     currentPosition += step;
                     if (isReal) {
                         provider.setPwm(myOutputs[pinNumber].getPin(), currentPosition);
@@ -112,7 +112,7 @@ public class PCA9685Servo {
                     }
                 }
             } else if (currentPosition > newPosition) {
-                while (currentPosition >= newPosition) {
+                while (currentPosition > newPosition) {
                     currentPosition -= step;
                     if (isReal) {
                         provider.setPwm(myOutputs[pinNumber].getPin(), currentPosition);
