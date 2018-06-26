@@ -5,6 +5,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.test.getData.DS18B20Read;
 import org.test.getData.DataProvider;
 import org.test.servoManage.PCA9685Servo;
 
@@ -58,6 +59,11 @@ public class Settings extends VerticalLayout implements View {
             labelStat.addStyleName(ValoTheme.LABEL_FAILURE);
         }
         layout.addComponent(labelStat);
+
+        DS18B20Read ds18B20Read = new DS18B20Read();
+        Label lab1 = new Label(ds18B20Read.getData());
+        lab1.addStyleName(ValoTheme.LABEL_H4);
+        layout.addComponent(lab1);
 
         Button button = new Button("Connect sensors");
         button.addStyleName(ValoTheme.BUTTON_PRIMARY);

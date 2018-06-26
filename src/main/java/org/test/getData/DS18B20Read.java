@@ -11,19 +11,25 @@ import java.util.List;
 public class DS18B20Read {
     W1Master master = new W1Master();
 
-    public void getData(){
-        List<W1Device> w1Devices = master.getDevices(TmpDS18B20DeviceType.FAMILY_CODE);
+    public String getData(){
+        List<W1Device> w1Devices = master.getDevices();//TmpDS18B20DeviceType.FAMILY_CODE);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Text \t" + "wSiz: " + w1Devices.size() + " \t");
         for (W1Device device : w1Devices) {
             //this line is enought if you want to read the temperature
-            System.out.println("Temperature: " + ((TemperatureSensor) device).getTemperature());
+            //System.out.println("Temperature: " + ((TemperatureSensor) device).getTemperature());
+            sb.append("Temperature: " + ((TemperatureSensor) device).getTemperature());
+
             //returns the temperature as double rounded to one decimal place after the point
 
             try {
                 System.out.println("1-Wire ID: " + device.getId() +  " value: " + device.getValue());
+                sb.append("1-Wire ID: " + device.getId() +  " value: " + device.getValue());
                 //returns the ID of the Sensor and the  full text of the virtual file
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        return sb.toString();
     }
 }
