@@ -76,10 +76,16 @@ public class Sensors extends VerticalLayout implements View {
         layout.setSpacing(true);
 
         Label content = new Label(
-                String.format( "%.2f", dataProvider.getTemp()) + " °C");
+                String.format( "In:  %.2f °C", dataProvider.getTemp()));
         content.setStyleName(ValoTheme.LABEL_BOLD);
         content.setWidth("10em");
         layout.addComponent(content);
+
+        Label temp2 = new Label(
+                String.format("Out: %.2f °C", dataProvider.getTemp2()));
+        temp2.setStyleName(ValoTheme.LABEL_BOLD);
+        temp2.setWidth("10em");
+        layout.addComponent(temp2);
 
 //        Button button = new Button("Button");
 //        button.setSizeFull();
@@ -99,7 +105,7 @@ public class Sensors extends VerticalLayout implements View {
 //        layout.setMargin(true);
         layout.setSpacing(true);
         Label content = new Label(
-                String.format("%.2f",dataProvider.getHum()) + "%");
+                String.format("%.2f %%",dataProvider.getHum()));
         content.setStyleName(ValoTheme.LABEL_BOLD);
         content.setWidth("10em");
         layout.addComponent(content);

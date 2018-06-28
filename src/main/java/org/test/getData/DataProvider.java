@@ -12,6 +12,7 @@ import java.util.List;
 public class DataProvider {
     private static DataProvider instance = new DataProvider();
     private volatile double currentTemp;
+    private volatile double currentTemp2;
     private volatile double currentHum;
     private volatile double currentPress;
     private volatile boolean sensorUse;
@@ -20,9 +21,10 @@ public class DataProvider {
                     "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     " time DATETIME, " +
                     " temp DOUBLE," +
+                    " temp2 DOUBLE," +
                     " hum DOUBLE," +
                     " press DOUBLE);";
-    DBexchange db;
+    private DBexchange db;
 
     private DataProvider(){
         // GetSensData gsd = GetSensData.getInst();
@@ -30,6 +32,7 @@ public class DataProvider {
         db = new DBexchange();
         db.createTable(SQL_CREATE_TABLE);  //
         currentTemp = 15;
+        currentTemp2 = 15;
         currentHum = 60;
         currentPress = 740;
         sensorUse = false;
@@ -41,17 +44,22 @@ public class DataProvider {
         return instance;
     }
 
-    public void updateInfo(LocalDateTime time, double temp, double hum, double press) {
+    public void updateInfo(LocalDateTime time, double temp, double temp2, double hum, double press) {
         currentTemp = temp;
+        currentTemp2 = temp2;
         currentHum = hum;
         currentPress = press;
 
-        db.update(time, temp, hum, press);
+        db.update(time, temp, temp2, hum, press);
 
     }
 
     public double getTemp() {
         return currentTemp;
+    }
+
+    public double getTemp2() {
+        return currentTemp2;
     }
 
     public double getPressure() {
@@ -76,7 +84,7 @@ public class DataProvider {
         List<SensorsSet> lss;
         List<SensorsSet> completedLss = new ArrayList<>();
         LocalDateTime end = LocalDateTime.now();
-        LocalDateTime begin = end.minus(Period.ofDays(1));
+        LocalDateTime begin = end.minusDays(1);
 
         lss = db.getListDataByPeriod(begin, end, dataType);
 
@@ -86,7 +94,7 @@ public class DataProvider {
         begin = lss.get(0).getTime();
 //        System.out.println(begin);
 //        System.out.println(begin.plusHours(hoursCount));
-//        lss.forEach(a -> System.out.println(a.getTime() + " " + a.getTemp()));
+        lss.forEach(a -> System.out.println(a.getTime() + " " + a.getTemp()));
 
         for (SensorsSet s : lss){
             if(s.getTime().isBefore(begin.plusHours(hoursCount))){

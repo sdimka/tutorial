@@ -9,10 +9,21 @@ import java.io.IOException;
 import java.util.List;
 
 public class DS18B20Read {
-    W1Master master = new W1Master();
+    private W1Master master;
+    private List<W1Device> w1Devices;
+    private static DS18B20Read instance = new DS18B20Read();
+
+    private DS18B20Read(){
+        master = new W1Master();
+        w1Devices = master.getDevices();
+    }
+
+    public static DS18B20Read getInstance(){
+        return instance;
+    }
 
     public String getData(){
-        List<W1Device> w1Devices = master.getDevices();//TmpDS18B20DeviceType.FAMILY_CODE);
+        //List<W1Device> w1Devices = master.getDevices();//TmpDS18B20DeviceType.FAMILY_CODE);
         StringBuilder sb = new StringBuilder();
         sb.append("Text \t" + "wSiz: " + w1Devices.size() + " \t");
         for (W1Device device : w1Devices) {
@@ -31,5 +42,10 @@ public class DS18B20Read {
             }
         }
         return sb.toString();
+    }
+
+    public double getTemp(){
+        W1Device device = w1Devices.get(0);
+        return ((TemperatureSensor) device).getTemperature();
     }
 }

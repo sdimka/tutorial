@@ -17,6 +17,7 @@ public class DBexchange {
                     "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     " time DATETIME, " +
                     " temp DOUBLE," +
+                    " temp2 DOUBLE," +
                     " hum DOUBLE," +
                     " press DOUBLE);";
     private final String SQL_SELECT = "SELECT * FROM " + NAME_TABLE + ";";
@@ -73,17 +74,18 @@ public class DBexchange {
         }
     }
 
-    void update(LocalDateTime time, double temp, double hum, double press) { // update passwd by login
+    void update(LocalDateTime time, double temp, double temp2, double hum, double press) { // update passwd by login
 
         try {
             PreparedStatement ps = connect.prepareStatement("INSERT INTO " +
-                    NAME_TABLE + "(time, temp, hum, press) " +
-                    "VALUES(?, ?, ?, ?);");
+                    NAME_TABLE + "(time, temp, temp2, hum, press) " +
+                    "VALUES(?, ?, ?, ?, ?);");
 
             ps.setTimestamp(1, Timestamp.valueOf(time));
             ps.setDouble(2, temp);
-            ps.setDouble(3, hum);
-            ps.setDouble(4, press);
+            ps.setDouble(3, temp);
+            ps.setDouble(4, hum);
+            ps.setDouble(5, press);
             ps.addBatch();
             ps.executeBatch();
         } catch (SQLException e) {

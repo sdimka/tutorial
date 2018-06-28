@@ -60,10 +60,10 @@ public class Settings extends VerticalLayout implements View {
         }
         layout.addComponent(labelStat);
 
-        DS18B20Read ds18B20Read = new DS18B20Read();
-        Label lab1 = new Label(ds18B20Read.getData());
-        lab1.addStyleName(ValoTheme.LABEL_H4);
-        layout.addComponent(lab1);
+//        DS18B20Read ds18B20Read = new DS18B20Read();
+//        Label lab1 = new Label(ds18B20Read.getData());
+//        lab1.addStyleName(ValoTheme.LABEL_H4);
+//        layout.addComponent(lab1);
 
         Button button = new Button("Connect sensors");
         button.addStyleName(ValoTheme.BUTTON_PRIMARY);
