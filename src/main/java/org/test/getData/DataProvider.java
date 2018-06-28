@@ -94,7 +94,7 @@ public class DataProvider {
         begin = lss.get(0).getTime();
 //        System.out.println(begin);
 //        System.out.println(begin.plusHours(hoursCount));
-        lss.forEach(a -> System.out.println(a.getTime() + " " + a.getTemp()));
+//        lss.forEach(a -> System.out.println(a.getTime() + " " + a.getTemp()));
 
         for (SensorsSet s : lss){
             if(s.getTime().isBefore(begin.plusHours(hoursCount))){
@@ -109,7 +109,7 @@ public class DataProvider {
             }
 
         }
-        completedLss.forEach(a-> System.out.println(a.getTemp()));
+//        completedLss.forEach(a-> System.out.println(a.getTemp()));
         completedLss.forEach(a->ls.addData(a.getTemp()));
 //        for (int i = 0; i < 24; i++){
 //            begin = LocalDateTime.now();
