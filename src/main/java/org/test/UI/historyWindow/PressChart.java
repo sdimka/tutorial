@@ -8,6 +8,8 @@ import com.vaadin.ui.Component;
 import org.test.getData.DataProvider;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 public class PressChart extends ChartInterface  {
@@ -15,6 +17,7 @@ public class PressChart extends ChartInterface  {
     private DataProvider dataProvider;
 
     private static final int ONE_HOUR = 60 * 60 * 1000;
+    private static final int HALF_HOUR = 30 * 60 * 1000;
     private static final SolidColor TRANSPARENT = new SolidColor(0, 0, 0, 0);
     private static final SolidColor LIGHT_BLUE = new SolidColor(68, 170, 213, 0.1);
     private static final SolidColor LIGHT_GRAY = new SolidColor("#606060");
@@ -98,8 +101,8 @@ public class PressChart extends ChartInterface  {
         plotOptions.getMarker().setStates(states);
 
         plotOptions.setPointInterval(ONE_HOUR);
-        LocalDate date = LocalDate.now();
-        plotOptions.setPointStart(date.atStartOfDay().toInstant(ZoneOffset.UTC));
+        LocalDateTime date = LocalDateTime.now();
+        plotOptions.setPointStart(date.minusDays(1).toInstant(OffsetDateTime.now().getOffset()));
 
         ListSeries ls = dataProvider.get24HData("press");
         ls.setName("Pressure");

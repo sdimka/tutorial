@@ -83,7 +83,7 @@ public class DBexchange {
 
             ps.setTimestamp(1, Timestamp.valueOf(time));
             ps.setDouble(2, temp);
-            ps.setDouble(3, temp);
+            ps.setDouble(3, temp2);
             ps.setDouble(4, hum);
             ps.setDouble(5, press);
             ps.addBatch();

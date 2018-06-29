@@ -7,8 +7,7 @@ import com.vaadin.addon.charts.model.style.Style;
 import com.vaadin.ui.Component;
 import org.test.getData.DataProvider;
 
-import java.time.LocalDate;
-import java.time.ZoneOffset;
+import java.time.*;
 
 public class TempChart extends ChartInterface  {
 
@@ -98,17 +97,17 @@ public class TempChart extends ChartInterface  {
         plotOptions.getMarker().setStates(states);
 
         plotOptions.setPointInterval(ONE_HOUR);
-        LocalDate date = LocalDate.now();
-        plotOptions.setPointStart(date.atStartOfDay().toInstant(ZoneOffset.UTC));
+        LocalDateTime date = LocalDateTime.now();
+//        plotOptions.setPointStart(date.atStartOfDay().toInstant(ZoneOffset.UTC));
 
+        plotOptions.setPointStart(date.minusDays(1).toInstant(OffsetDateTime.now().getOffset()));
         ListSeries ls = dataProvider.get24HData("temp");
         ls.setName("Temp");
-//        ls.setData(4.3, 5.1, 4.3, 5.2, 5.4, 4.7, 3.5, 4.1, 5.6, 7.4, 6.9, 7.1,
-//                7.9, 7.9, 7.5, 6.7, 7.7, 7.7, 7.4, 7.0, 7.1, 5.8, 5.9, 7.4,
-//                8.2, 8.5, 9.4, 8.1, 10.9, 10.4, 10.9, 12.4, 12.1, 9.5, 7.5,
-//                7.1, 7.5, 8.1, 6.8, 3.4, 2.1, 1.9, 2.8, 2.9, 1.3, 4.4, 4.2,
-//                3.0, 3.0);
         configuration.addSeries(ls);
+
+        ListSeries ls2 = dataProvider.get24HData("temp2");
+        ls2.setName("Temp-outside");
+        configuration.addSeries(ls2);
 
         chart.drawChart(configuration);
         return chart;

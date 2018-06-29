@@ -75,6 +75,10 @@
   $color5: #fe902a;
   $colors: $color1, $color2, $color3, $color4, $color5;
 
+   .left.v-label-wrap {
+    text-align: left;
+   }
+
   .v-textfield-color1 {
     @include valo-textfield-style($background-color: $color1);
   }

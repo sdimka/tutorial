@@ -75,21 +75,43 @@ public class Sensors extends VerticalLayout implements View {
         layout.setMargin(true);
         layout.setSpacing(true);
 
-        Label content = new Label(
-                String.format( "In:  %.2f °C", dataProvider.getTemp()));
-        content.setStyleName(ValoTheme.LABEL_BOLD);
-        content.setWidth("10em");
-        layout.addComponent(content);
+        Page.Styles styles = Page.getCurrent().getStyles();
+        styles.add(".mytheme .v-caption-inline-icon img.v-icon {\n" +
+                "\tleft: 1px;\n" +
+                "\tbottom: 1px;\n" +
+                "}");
 
-        Label temp2 = new Label(
-                String.format("Out: %.2f °C", dataProvider.getTemp2()));
-        temp2.setStyleName(ValoTheme.LABEL_BOLD);
-        temp2.setWidth("10em");
-        layout.addComponent(temp2);
+//        Label content = new Label(
+//                String.format( "In:  %.2f °C", dataProvider.getTemp()));
+//        content.setStyleName(ValoTheme.LABEL_BOLD);
+//        content.setWidth("10em");
+//        content.addStyleName("left");
+//        content.setIcon(new ThemeResource("icons/1a.png"));
+//        layout.addComponent(content);
 
-//        Button button = new Button("Button");
-//        button.setSizeFull();
-//        layout.addComponent(button);
+        TextField tf = new TextField();
+        tf.setValue(String.format(" %.2f °C", dataProvider.getTemp()));
+        tf.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+        tf.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+        tf.setIcon(new ThemeResource("icons/2a.png"));
+        tf.setReadOnly(true);
+        tf.setWidth("10em");
+        layout.addComponent(tf);
+
+//        Label temp2 = new Label(
+//                String.format("Out: %.2f °C", dataProvider.getTemp2()));
+//        temp2.setStyleName(ValoTheme.LABEL_BOLD);
+//        temp2.setWidth("10em");
+//        layout.addComponent(temp2);
+
+        TextField tf1 = new TextField();
+        tf1.setValue(String.format(" %.2f °C", dataProvider.getTemp2()));
+        tf1.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+        tf1.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+        tf1.setIcon(new ThemeResource("icons/1a.png"));
+        tf1.setReadOnly(true);
+        tf1.setWidth("10em");
+        layout.addComponent(tf1);
 
         PopupView sample = new PopupView(new PopUpWindow(TempChart.class));
         layout.addComponent(sample);

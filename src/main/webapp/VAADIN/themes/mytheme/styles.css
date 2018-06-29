@@ -15090,6 +15090,15 @@ div.v-layout.v-horizontal.v-widget {
 	top: 37px;
 }
 
+.mytheme .left.v-label-wrap {
+	text-align: left;
+}
+
+.mytheme .v-caption-inline-icon img.v-icon {
+	left: 1px;
+	bottom: 1px;
+}
+
 .mytheme .v-textfield-color1 {
 	-webkit-appearance: none;
 	-moz-appearance: none;
