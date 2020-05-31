@@ -14,9 +14,9 @@
 	</prerequisites>
 
 	<properties>
-		<vaadin.version>8.3.1</vaadin.version>
-		<vaadin.plugin.version>8.3.1</vaadin.plugin.version>
-		<jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version>
+		<vaadin.version>8.11.0</vaadin.version>
+		<vaadin.plugin.version>8.11.0</vaadin.plugin.version>
+		<jetty.plugin.version>9.4.29.v20200521</jetty.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -56,17 +56,17 @@
 		<dependency>
 			<groupId>com.pi4j</groupId>
 			<artifactId>pi4j-core</artifactId>
-			<version>1.2-SNAPSHOT</version>
+			<version>1.2</version>
 		</dependency>
         <dependency>
             <groupId>com.pi4j</groupId>
             <artifactId>pi4j-gpio-extension</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>com.pi4j</groupId>
             <artifactId>pi4j-device</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>1.2</version>
         </dependency>
 
 		<dependency>
@@ -104,7 +104,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-charts</artifactId>
-			<version>4.0.3</version>
+			<version>4.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.oshi</groupId>
